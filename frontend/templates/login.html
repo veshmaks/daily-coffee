@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Вход - Daily Coffee{% endblock %}
+{% block content %}
+<main class="auth">
+    <div class="wrap">
+        <div class="auth-box">
+            <h1 class="auth-title">Вход</h1>
+            
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form class="auth-form" method="post">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="error">
+                    <strong>Ошибки:</strong>
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                            <li>{{ field|title }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div class="group">
+                    <label for="id_email">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.email.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_password">Пароль</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.password.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn-auth">Войти</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Нет аккаунта? <a href="{% url 'register' %}">Регистрация</a></p>
+                <p><a href="{% url 'home' %}">← На главную</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

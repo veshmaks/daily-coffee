@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Daily Coffee{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="top">
+        <div class="wrap">
+            <div class="top-inner">
+                <a href="/" class="logo">DAILY COFFEE</a>
+                <nav>
+                    <ul class="nav">
+                        <li><a href="/" class="nav-link">Главная</a></li>
+                        <li><a href="/menu/" class="nav-link">Меню</a></li>
+                        <li><a href="/booking/" class="nav-link">Бронирование</a></li>
+                        <li><a href="/contacts/" class="nav-link">Контакты</a></li>
+                        <li><a href="/promo/" class="nav-link">Акции</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="/profile/" class="nav-link">Профиль</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    {% if user.is_authenticated %}
+                        <span style="color: white;">Привет, {{ user.first_name }} {{ user.last_name }}!</span>
+                        <a href="{% url 'logout' %}" class="btn">Выйти</a>
+                    {% else %}
+                        <a href="/login/" class="btn">Войти</a>
+                        <a href="/register/" class="btn">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+            <button type="button" class="close-message" onclick="this.parentElement.style.display='none'">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bottom">
+        <div class="wrap">
+            <div class="bottom-inner">
+                <div class="col">
+                    <a href="/" class="logo">DAILY COFFEE</a>
+                    <p>Свежий кофе для хорошего начала.</p>
+                </div>
+                <div class="col">
+                    <h3>Контакты</h3>
+                    <p>Ульяновск, Красноармейская улица, 4</p>
+                    <p>Пн-Вс: 8:00 - 23:00</p>
+                    <p>+74951234567</p>
+                </div>
+                <div class="col">
+                    <h3>Мы в соцсетях</h3>
+                    <div>
+                        <a href="#" style="color: white; margin-right: 10px;">ВК</a>
+                        <a href="#" style="color: white; margin-right: 10px;">Одноклассники</a>
+                        <a href="#" style="color: white;">MAX</a>
+                    </div>
+                </div>
+            </div>
+            <p class="copy">&copy; Daily Coffee, {% now "Y" %}</p>
+        </div>
+    </footer>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

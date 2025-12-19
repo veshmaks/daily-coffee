@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Регистрация{% endblock %}
+{% block content %}
+<main class="auth">
+    <div class="wrap">
+        <div class="auth-box">
+            <h1 class="auth-title">Регистрация</h1>
+            
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" 
+                     style="padding: 12px 15px; margin: 10px 0; border-radius: 6px; 
+                            {% if message.tags == 'success' %}background: #d4edda; color: #155724;
+                            {% elif message.tags == 'error' %}background: #f8d7da; color: #721c24;
+                            {% else %}background: #fff3cd; color: #856404;{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form class="auth-form" method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="form-errors" style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+                    <strong>Ошибки:</strong>
+                    <ul style="margin: 5px 0 0 20px; padding: 0;">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                            <li>{{ field|title }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div class="group">
+                    <label for="id_first_name">Имя *</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.first_name.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_last_name">Фамилия</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.last_name.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_phone">Телефон</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.phone.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_email">Email *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.email.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_password1">Пароль *</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.password1.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="group">
+                    <label for="id_password2">Подтверждение *</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.password2.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                               
+                <button type="submit" class="btn-auth">Зарегистрироваться</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

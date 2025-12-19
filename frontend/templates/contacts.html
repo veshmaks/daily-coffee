@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Контакты{% endblock %}
+{% block content %}
+<main class="content">
+    <div class="wrap">
+        <h1 class="title">Контакты</h1>
+        <div class="contacts-grid">
+            <div class="info">
+                <div class="contact">
+                    <h3>Адрес</h3>
+                    <p>Ульяновск, Красноармейская улица, 4</p>
+                    
+                </div>
+                <div class="contact">
+                    <h3>Часы работы</h3>
+                    <p>Пн-Вс: 8:00 - 23:00</p>
+                </div>
+                <div class="contact">
+                    <h3>Телефон</h3>
+                    <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+                </div>
+                <div class="contact">
+                    <h3>Email</h3>
+                    <p><a href="mailto:hello@dailycoffee.ru">hello@dailycoffee.ru</a></p>
+                </div>
+            </div>
+            <div class="map">
+                <div class="map-place">
+                    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A24593ad73e275e4bd4467b45cdacc47a5af20837500fd215bdd3ee0425d30b3d&amp;source=constructor" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

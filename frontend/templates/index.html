@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Главная{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="wrap">
+        <h1 class="hero-title">Идеальная чашка каждый день</h1>
+        <p class="hero-sub">Свежий кофе и завтраки</p>
+        <a href="/menu/" class="btn btn-large">Меню</a>
+        <a href="/booking/" class="btn btn-large" style="margin-left: 15px;">Бронировать</a>
+    </div>
+</section>
+
+<section class="block">
+    <div class="wrap">
+        <h2 class="block-title">Популярное</h2>
+        {% if popular_items %}
+        <div class="grid">
+            {% for item in popular_items %}
+            <div class="card">
+                <div class="item-img" style="position: relative;">
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div style="width: 100%; height: 200px; background: #f9f3e9; display: flex; align-items: center; justify-content: center; color: #c19a6b; font-weight: bold;">
+                        {{ item.get_type_display }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if item.has_discount %}
+                    <div style="position: absolute; top: 15px; right: 15px; background: #ff4d4d; color: white; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 14px;">
+                        -{{ item.discount_percent }}%
+                    </div>
+                    {% endif %}
+                    
+                    <div class="popular-badge" style="position: absolute; top: 15px; left: 15px; background: #c19a6b; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                        Популярное
+                    </div>
+                </div>
+                <div class="item-content">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description|default:"Вкусное блюдо"|truncatechars:60 }}</p>
+                    <div class="price-block">
+                        {% if item.has_discount %}
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 14px; color: #999; text-decoration: line-through;">
+                                {{ item.price }} ₽
+                            </span>
+                            <span style="font-size: 24px; font-weight: bold; color: #ff4d4d;">
+                                {{ item.discount_price|floatformat:2 }} ₽
+                            </span>
+                        </div>
+                        {% else %}
+                        <span class="regular-price" style="font-size: 24px; font-weight: bold; color: #c19a6b;">
+                            {{ item.price }} ₽
+                        </span>
+                        {% endif %}
+                    </div>
+                    <span class="item-type">{{ item.get_type_display }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 40px;">
+            <p style="font-size: 18px; color: #666; margin-bottom: 20px;">Популярных товаров нет</p>
+            <a href="/menu/" class="btn">Меню</a>
+        </div>
+        {% endif %}
+        <div class="center" style="margin-top: 30px;">
+            <a href="/menu/" class="btn">Всё меню</a>
+        </div>
+    </div>
+</section>
+
+<section class="block block-gray">
+    <div class="wrap">
+        <div class="center">
+            <h2 class="block-title">Ждем в гости</h2>
+            <p>Ульяновск, Красноармейская улица, 4<br>Пн-Вс: 8:00 - 23:00</p>
+            <a href="/contacts/" class="btn">Посмотреть на карте</a>
+        </div>
+        </div>
+    </div>
+</section>
+
+<section class="block">
+    <div class="wrap">
+        <h2 class="block-title">Акции</h2>
+        {% if current_promos %}
+        <div class="promo-grid">
+            {% for promo in current_promos %}
+            <div class="promo-card">
+                <div class="promo-image">
+                    {% if promo.image %}
+                    <img src="{{ promo.image.url }}" alt="{{ promo.title }}" style="width: 100%; height: 180px; object-fit: cover;">
+                    {% elif promo.image_url %}
+                    <img src="{{ promo.image_url }}" alt="{{ promo.title }}" style="width: 100%; height: 180px; object-fit: cover;">
+                    {% else %}
+                    <div style="background: linear-gradient(135deg, #c19a6b 0%, #8b6b47 100%); height: 180px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
+                        АКЦИЯ
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="promo-content">
+                    <h3>{{ promo.title }}</h3>
+                    <p>{{ promo.description|truncatechars:120 }}</p>
+                    <div class="promo-meta">
+                        <span class="promo-date">
+                            {{ promo.start_date|date:"d.m.Y" }} - {{ promo.end_date|date:"d.m.Y" }}
+                        </span>
+                    </div>
+                
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 40px;">
+            <p style="font-size: 18px; color: #666;">Нет активных акций</p>
+        </div>
+        {% endif %}
+        <div class="center">
+            <a href="/promo/" class="btn">Все акции</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

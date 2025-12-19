@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Личный кабинет{% endblock %}
+{% block content %}
+<main class="content">
+    <div class="wrap">
+        <div class="profile">
+            <aside class="sidebar">
+                <div class="user">
+                    <div class="user-img">
+                        {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1"|default:"" }}
+                    </div>
+                    <div class="user-name">
+                        {{ user.first_name|default:user.username }} {{ user.last_name|default:"" }}
+                    </div>
+                    <div class="user-email">
+                        {{ user.email }}
+                    </div>
+                </div>
+                <ul class="side-nav">
+                    <li>
+                        <a href="#bookings" class="active">Мои бронирования</a>
+                    </li>
+                    <li>
+                        <a href="/">← На сайт</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" style="color: #dc3545;">Выйти</a>
+                    </li>
+                </ul>
+            </aside>
+            
+            <div class="panel">
+                <section id="bookings">
+                    <h2 class="panel-title">Мои бронирования</h2>
+                    <div class="bookings">
+                        {% if bookings %}
+                            {% for booking in bookings %}
+                            <div class="booking">
+                                <div class="booking-info">
+                                    <h4>Столик на {{ booking.persons }} {{ booking.persons|pluralize:"персону,персоны,персон" }}</h4>
+                                    <p>{{ booking.date|date:"d.m.Y" }}, {{ booking.time|time:"H:i" }}</p>
+                                    {% if booking.comment %}
+                                    <p>Комментарий: "{{ booking.comment }}"</p>
+                                    {% endif %}
+                                </div>
+                                <div class="status 
+                                    {% if booking.status == 'confirmed' %}status-confirmed
+                                    {% elif booking.status == 'cancelled' %}status-cancelled
+                                    {% else %}status-new{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div style="text-align: center; padding: 40px;">
+                                <p style="font-size: 18px; color: #666; margin-bottom: 20px;">
+                                    Нет бронирований
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="{% url 'booking' %}" class="btn">Новое бронирование</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

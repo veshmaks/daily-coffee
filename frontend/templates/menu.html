@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Меню{% endblock %}
+{% block content %}
+<main class="content">
+    <div class="wrap">
+        <h1 class="title">Меню</h1>
+        
+        <div class="filters">
+            <a href="?type=all" class="filter-btn {% if selected_type == 'all' or not selected_type %}active{% endif %}">Все</a>
+            <a href="?type=coffee" class="filter-btn {% if selected_type == 'coffee' %}active{% endif %}">Кофе</a>
+            <a href="?type=tea" class="filter-btn {% if selected_type == 'tea' %}active{% endif %}">Чай</a>
+            <a href="?type=desserts" class="filter-btn {% if selected_type == 'desserts' %}active{% endif %}">Десерты</a>
+            <a href="?type=breakfast" class="filter-btn {% if selected_type == 'breakfast' %}active{% endif %}">Завтраки</a>
+        </div>
+
+        <div class="menu-grid">
+            {% for item in menu_items %}
+            <div class="menu-card">
+                {% if item.has_discount %}
+                <div class="discount-badge">
+                    -{{ item.discount_percent }}%
+                </div>
+                {% endif %}
+                
+                <div class="menu-card-image" style="background-image: url('{% if item.image %}{{ item.image.url }}{% endif %}');">
+                    <span class="menu-type-badge">{{ item.get_type_display }}</span>
+                </div>
+                
+                <div class="menu-card-content">
+                    <h3>{{ item.name }}</h3>
+                    <p class="menu-description">{{ item.description|default:"Без описания"|truncatechars:80 }}</p>
+                    
+                    <div class="menu-card-footer">
+                        <div class="price-container">
+                            {% if item.has_discount %}
+                            <span class="old-price">{{ item.price }} ₽</span>
+                            <span class="new-price">{{ item.discount_price|floatformat:2 }} ₽</span>
+                            {% else %}
+                            <span class="regular-price">{{ item.price }} ₽</span>
+                            {% endif %}
+                        </div>
+                        
+                        {% if item.has_discount %}
+                        <span class="promo-badge">Акция</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-menu" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                <p style="font-size: 18px; color: #666;">В меню пока нет позиций</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

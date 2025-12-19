@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Daily Coffee | Бронирование{% endblock %}
+{% block content %}
+<main class="content">
+    <div class="wrap">
+        <h1 class="title">Бронирование столика</h1>
+        <p class="subtitle">Заполните форму</p>
+
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form class="form" method="post">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+                <strong>Исправьте ошибки:</strong>
+                <ul style="margin: 5px 0 0 20px;">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="group">
+                    <label>Имя *</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.name.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="group">
+                    <label>Телефон *</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.phone.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="group">
+                    <label>Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.email.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="group">
+                    <label>Дата *</label>
+                    {{ form.date }}
+                    {% if form.date.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.date.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="group">
+                    <label>Время *</label>
+                    {{ form.time }}
+                    {% if form.time.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.time.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="group">
+                    <label>Количество гостей *</label>
+                    {{ form.persons }}
+                    {% if form.persons.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {{ form.persons.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="group">
+                <label>Комментарий</label>
+                {{ form.comment }}
+                {% if form.comment.errors %}
+                <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                    {{ form.comment.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-large">Отправить</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
